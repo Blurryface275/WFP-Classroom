@@ -110,10 +110,17 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         //
-        $category = Category::findOrFail($id);
-        $category->delete();
-        return redirect()->route('category.index')
-            ->with('success', 'Kategori berhasil dihapus!');
+        try{
+            $category = Category::findOrFail($id);
+            $category->delete();
+            return redirect()->route('category.index')
+                ->with('success', 'Kategori berhasil dihapus!');
+        }
+        catch(\PDOException $e){
+            $message = "Make sure there are no services in this category!";
+            return redirect()->route('category.index')
+                ->with('error', $message);
+        }
     }
 
     public function showExpensiveServices(string $id) {}

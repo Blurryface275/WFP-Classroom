@@ -33,6 +33,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
     <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
         <h2 class="mb-0">List of Categories</h2>
@@ -93,11 +99,45 @@
             </td>
             <td>
         <a class="btn btn-warning" href="{{ route('category.edit', $category->id) }}">Edit</a>
-        <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+
+        {{-- Hidden delete form (outside modal) --}}
+        <form id="delete-form-{{ $category->id }}"
+              action="{{ route('category.destroy', $category->id) }}"
+              method="POST" style="display:inline;">
             @csrf
             @method('DELETE')
-            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete {{ $category->category_name }} - {{ $category->id }}?')">
         </form>
+
+        {{-- Trigger button --}}
+        <button type="button" class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal-{{ $category->id }}">
+            Delete
+        </button>
+
+        @push('modals')
+        <!-- Delete Confirmation Modal {{ $category->id }} -->
+        <div class="modal fade" id="deleteModal-{{ $category->id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Hapus Kategori {{ $category->category_name }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Apakah anda yakin ingin menghapus kategori <strong>{{ $category->category_name }}</strong> (ID: {{ $category->id }})?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger"
+                        onclick="document.getElementById('delete-form-{{ $category->id }}').submit()">
+                    Yes, Hapus
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endpush
       </td>
 
         </tr>
@@ -119,6 +159,7 @@
         }
       });
     }
+
   </script>
 @endpush
 
