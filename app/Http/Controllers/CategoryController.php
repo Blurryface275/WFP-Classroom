@@ -24,7 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -32,7 +32,23 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'category_name' => 'required|string|max:255',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('categories', 'public');
+        }
+
+        Category::create([
+            'category_name' => $validated['category_name'],
+            'image'         => $imagePath,
+        ]);
+
+        return redirect()->route('category.index')
+            ->with('success', 'Kategori baru berhasil ditambahkan!');
     }
 
     /**
@@ -48,7 +64,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -56,7 +73,25 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $validated = $request->validate([
+            'category_name' => 'required|string|max:255',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $imagePath = $category->image; // keep existing image by default
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('categories', 'public');
+        }
+
+        $category->update([
+            'category_name' => $validated['category_name'],
+            'image'         => $imagePath,
+        ]);
+
+        return redirect()->route('category.index')
+            ->with('success', 'Kategori berhasil diperbarui!');
     }
 
     /**

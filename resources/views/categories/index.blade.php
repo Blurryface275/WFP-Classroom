@@ -24,11 +24,20 @@
 
 
 <div class="container">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
+    {{-- Flash Message --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-  <h2>List of Categories</h2>
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+        <h2 class="mb-0">List of Categories</h2>
+        <a href="{{ route('category.create') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle-fill me-1"></i> Tambah Kategori
+        </a>
+    </div>
     <p>The <a href="#" onclick="showInfo()">table</a> class adds basic styling (light padding and only horizontal dividers) to a table:</p>
     <div id="showinfo"></div>
   <table class="table">
@@ -80,6 +89,10 @@
                     @endforeach
                 </ul>
             </td>
+            <td>
+        <a class="btn btn-warning" href="{{ route('category.edit', $category->id) }}">Edit</a>
+      </td>
+
         </tr>
         @endforeach
     </tbody>
