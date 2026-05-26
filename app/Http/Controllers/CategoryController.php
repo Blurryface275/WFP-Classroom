@@ -41,6 +41,10 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('categories', 'public');
         }
+        else if(!$request->hasFile('image')){
+            return redirect()->back()
+                ->with('error', 'Tambahkan gambar untuk kategori!');
+        }
 
         Category::create([
             'category_name' => $validated['category_name'],
@@ -84,11 +88,17 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('categories', 'public');
         }
+        else{ // drop error here
+            return redirect()->route('category.index')
+                ->with('error', 'Kategori gagal diperbarui!');
+        }
 
         $category->update([
             'category_name' => $validated['category_name'],
             'image'         => $imagePath,
         ]);
+
+        $category->save();
 
         return redirect()->route('category.index')
             ->with('success', 'Kategori berhasil diperbarui!');
@@ -100,6 +110,10 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         //
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->route('category.index')
+            ->with('success', 'Kategori berhasil dihapus!');
     }
 
     public function showExpensiveServices(string $id) {}

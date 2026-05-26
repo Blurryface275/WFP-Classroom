@@ -18,6 +18,7 @@
                     <h5 class="mb-0">Edit Kategori</h5>
                 </div>
                 <div class="card-body">
+                    <!-- buat add data di edit category -->
                     <form action="{{ route('category.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

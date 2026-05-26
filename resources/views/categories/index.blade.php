@@ -23,6 +23,8 @@
 @endpush
 
 
+
+
 <div class="container">
     {{-- Flash Message --}}
     @if (session('success'))
@@ -91,6 +93,11 @@
             </td>
             <td>
         <a class="btn btn-warning" href="{{ route('category.edit', $category->id) }}">Edit</a>
+        <form action="{{ route('category.destroy', $category->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure to delete {{ $category->category_name }} - {{ $category->id }}?')">
+        </form>
       </td>
 
         </tr>
