@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -22,8 +23,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies(); // fungsi untuk megefinisikan aturan authorization
-        
-
+        Gate::define('delete-permission', [\App\Policies\CategoryPolicy::class, 'delete']); // mengarah pada fungsi delete yangn ada di category policy
         //
     }
 }

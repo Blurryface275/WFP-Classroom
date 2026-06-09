@@ -106,6 +106,8 @@
         <a class="btn btn-warning" href="{{ route('category.edit', $category->id) }}"><i class="bi bi-pencil-square"></i>Edit</a>
 
         <a href="#modalEditA" class="btn btn-warning" data-bs-toggle="modal" onclick="getEditForm({{ $category->id }})"><i class="bi pencil"></i>Edit</a>
+        @can('delete-permission', $category)
+        <!-- cara kerjanya delete button menghilang  -->
         {{-- Hidden delete form (outside modal) --}}
         <form id="delete-form-{{ $category->id }}"
               action="{{ route('category.destroy', $category->id) }}"
@@ -120,6 +122,7 @@
                 data-bs-target="#deleteModal-{{ $category->id }}">
             Delete
         </button>
+        @endcan
 
         @push('modals')
         <!-- Delete Confirmation Modal {{ $category->id }} -->
