@@ -61,3 +61,7 @@ Route::resource('article', App\Http\Controllers\ArticleController::class);
 Route::get('/category/showExpensiveServices/{id}', [App\Http\Controllers\CategoryController::class, 'showExpensiveServices'])->name('category.showExpensiveServices');
 Route::post("/category/showInfo", [CategoryController::class, 'showInfo'])->name("category.showInfo");
 Route::post('/ajax/category/getEditForm',[CategoryController::class,'getEditForm'])->name('category.getEditForm');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
