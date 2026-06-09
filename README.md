@@ -1,66 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# WFP Classroom — Portal Kesehatan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A **health portal management system** built with **Laravel 10** as part of the Web Framework Programming (WFP) course. This application supports management of healthcare services, categories, doctors, articles, and patient transactions.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- 🏥 **Service Management** — CRUD for health services with category tagging and pricing
+- 📂 **Category Management** — Manage service categories with image support
+- 👨‍⚕️ **Doctor Management** — Add and manage doctor profiles
+- 📰 **Article Management** — Publish health-related articles
+- 💳 **Transaction Management** — Record and manage patient service transactions (Many-to-Many with Services)
+- 🔐 **Authentication** — User login/register via `laravel/ui`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer       | Technology                  |
+| ----------- | --------------------------- |
+| Framework   | Laravel 10                  |
+| Language    | PHP ^8.1                    |
+| Database    | MySQL                       |
+| Frontend    | Blade + AdminLTE            |
+| Auth        | Laravel UI (Bootstrap Auth) |
+| HTTP Client | Guzzle 7                    |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Requirements
 
-## Laravel Sponsors
+Before cloning this project, make sure you have the following installed:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- **PHP** >= 8.1
+- **Composer** >= 2.x
+- **MySQL** >= 5.7 / MariaDB >= 10.3
+- **Node.js** >= 16.x & **npm**
+- A local web server (e.g., **XAMPP**, **Laragon**, or **Herd**)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 🚀 Installation
 
-## Contributing
+### 1. Clone the repository
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone https://github.com/Blurryface275/WFP-Classroom.git
+cd WFP-Classroom
+```
 
-## Code of Conduct
+### 2. Install PHP dependencies
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+### 3. Install Node dependencies
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm install
+```
 
-## License
+### 4. Set up environment file
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+```
+
+Then open `.env` and update the following values to match your local setup:
+
+```env
+APP_NAME="Portal Kesehatan"
+APP_URL=http://localhost/laravel10/public
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel10       # create this database first in phpMyAdmin / MySQL
+DB_USERNAME=root
+DB_PASSWORD=                # leave empty for XAMPP default
+```
+
+### 5. Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Run database migrations
+
+```bash
+php artisan migrate
+```
+
+### 7. (Optional) Seed the database with sample data
+
+```bash
+php artisan db:seed
+```
+
+This will populate the database with sample categories, services, doctors, articles, transactions, and a default user account.
+
+### 8. Build frontend assets
+
+```bash
+npm run dev
+```
+
+> For production: `npm run build`
+
+### 9. Set storage permissions (Linux/Mac only)
+
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+---
+
+## 🌐 Accessing the Application
+
+If using **XAMPP**, place the project inside `C:\xampp\htdocs\` and access it at:
+
+```
+http://localhost/laravel10/public
+```
+
+If using `php artisan serve`:
+
+```bash
+php artisan serve
+```
+
+Then visit: `http://127.0.0.1:8000`
+
+---
+
+## 📁 Project Structure (Key Directories)
+
+```
+laravel10/
+├── app/
+│   ├── Http/Controllers/     # Controllers (Category, Service, Doctor, etc.)
+│   └── Models/               # Eloquent Models
+├── database/
+│   ├── migrations/           # Database schema definitions
+│   └── seeders/              # Sample data seeders
+├── resources/
+│   └── views/                # Blade templates (AdminLTE layout)
+└── routes/
+    └── web.php               # All web routes
+```
+
+---
+
+## 🗂️ Available Routes
+
+| Method | URI                   | Description               |
+| ------ | --------------------- | ------------------------- |
+| GET    | `/`                   | Landing page              |
+| GET    | `/home`               | Dashboard (requires auth) |
+| \*     | `/services`           | Services CRUD             |
+| \*     | `/category`           | Categories CRUD           |
+| \*     | `/doctor`             | Doctors CRUD              |
+| \*     | `/transaction`        | Transactions CRUD         |
+| \*     | `/article`            | Articles CRUD             |
+| GET    | `/login`, `/register` | Authentication pages      |
+
+> `*` means all standard RESTful routes (index, create, store, show, edit, update, destroy)
+
+---
+
+## 🔑 Default Seeded Account
+
+After running `php artisan db:seed`, you can log in with:
+
+| Field    | Value               |
+| -------- | ------------------- |
+| Email    | `admin@example.com` |
+| Password | `password`          |
+
+> ⚠️ Change these credentials immediately in a production environment.
+
+---
+
+## 📦 Key Packages
+
+| Package             | Purpose                      |
+| ------------------- | ---------------------------- |
+| `laravel/ui`        | Auth scaffolding (Bootstrap) |
+| `laravel/sanctum`   | API token authentication     |
+| `guzzlehttp/guzzle` | HTTP client                  |
+| `fakerphp/faker`    | Fake data for seeding        |
+
+---
+
+## 🤝 Contributing
+
+1. Fork this repository
+2. Create your feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'feat: add your feature'`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
