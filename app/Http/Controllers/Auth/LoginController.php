@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/category'; // setelah login lgsg dilempar ke category
 
     /**
      * Create a new controller instance.

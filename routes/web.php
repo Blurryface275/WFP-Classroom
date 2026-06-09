@@ -17,7 +17,7 @@ use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('index2');
-});
+})->middleware('auth'); // -> kalau tidak ada username yang tersimpan (udah logout), maka akan diarahkan ke halaman login
 
 Route::get('/contoh/{id}/nama/{nama}', function ($id, $nama) {
     return "Parameter dengan id : " . $id . ", Nama : " . $nama;
@@ -52,15 +52,17 @@ Route::get('greetings', function () {
     return view('welcome', ['name' => "Edward"]);
 })->name("greetings");
 
-Route::resource('services', App\Http\Controllers\ServiceController::class);
-Route::resource('category', App\Http\Controllers\CategoryController::class);
-Route::resource('doctor', App\Http\Controllers\DoctorController::class);
-Route::resource('transaction', App\Http\Controllers\TransactionController::class);
-Route::resource('article', App\Http\Controllers\ArticleController::class);
+Route::middleware(["auth"])->group(function () {
+    Route::resource('services', App\Http\Controllers\ServiceController::class);
+    Route::resource('category', App\Http\Controllers\CategoryController::class);
+    Route::resource('doctor', App\Http\Controllers\DoctorController::class);
+    Route::resource('transaction', App\Http\Controllers\TransactionController::class);
+    Route::resource('article', App\Http\Controllers\ArticleController::class);
+});
 
 Route::get('/category/showExpensiveServices/{id}', [App\Http\Controllers\CategoryController::class, 'showExpensiveServices'])->name('category.showExpensiveServices');
 Route::post("/category/showInfo", [CategoryController::class, 'showInfo'])->name("category.showInfo");
-Route::post('/ajax/category/getEditForm',[CategoryController::class,'getEditForm'])->name('category.getEditForm');
+Route::post('/ajax/category/getEditForm', [CategoryController::class, 'getEditForm'])->name('category.getEditForm');
 
 Auth::routes();
 
