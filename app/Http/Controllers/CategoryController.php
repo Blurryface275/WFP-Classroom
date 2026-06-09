@@ -137,4 +137,15 @@ class CategoryController extends Controller
                 $highestServiceCategory->category_name . '</b></div>'
         ), 200);
     }
+
+    public function getEditForm(Request $request)
+    {
+        $id = $request->id;
+        $data = Category::find($id);
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => view('categories.getEditForm', compact('data'))->render()
+            ),200);
+    }
+
 }
