@@ -15,7 +15,8 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all();
-        return view('services.index', compact('services'));
+        $categories = Category::all();
+        return view('services.index', compact('services', 'categories'));
     }
 
     /**
@@ -67,22 +68,59 @@ class ServiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function getEditFormB(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Service::with('category')->find($id);
+        $categories = Category::all();
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => view('services.getEditFormB', compact('data', 'categories'))->render()
+        ), 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function saveDataUpdate(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Service::find($id);
+        $data->service_name = $request->service_name;
+        $data->description = $request->description;
+        $data->availability = $request->availability;
+        $data->price = $request->price;
+        $data->category_id = $request->category_id;
+        $data->save();
+
+        // return the category name as well so the frontend can update safely
+        $categoryName = Category::find($request->category_id)->category_name;
+
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => 'Service data is up-to-date!',
+            'category_name' => $categoryName
+        ), 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    public function deleteData(Request $request)
+    {
+        $id = $request->id;
+        $data = Service::find($id);
+        
+        if ($data) {
+            // Delete pivot manually to avoid SQL constraints
+            $data->transactions()->detach();
+            
+            $data->delete();
+            return response()->json(array(
+                'status' => 'oke',
+                'msg' => 'Service data is removed !'
+            ), 200);
+        }
+
+        return response()->json(array(
+            'status' => 'error',
+            'msg' => 'Service not found!'
+        ), 404);
+    }
     public function destroy(string $id)
     {
         //

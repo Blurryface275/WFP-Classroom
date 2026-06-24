@@ -64,6 +64,25 @@ Route::get('/category/showExpensiveServices/{id}', [App\Http\Controllers\Categor
 Route::post("/category/showInfo", [CategoryController::class, 'showInfo'])->name("category.showInfo");
 Route::post('/ajax/category/getEditForm', [CategoryController::class, 'getEditForm'])->name('category.getEditForm');
 
+Route::post('/ajax/services/getEditFormB', [ServiceController::class, 'getEditFormB'])->name('services.getEditFormB');
+Route::post('/ajax/services/saveDataUpdate', [ServiceController::class, 'saveDataUpdate'])->name('services.saveDataUpdate');
+Route::post('/ajax/services/deleteData', [ServiceController::class, 'deleteData'])->name('services.deleteData');
+
+Route::post('/ajax/transactions/getEditFormB', [App\Http\Controllers\TransactionController::class, 'getEditFormB'])->name('transactions.getEditFormB');
+Route::post('/ajax/transactions/saveDataUpdate', [App\Http\Controllers\TransactionController::class, 'saveDataUpdate'])->name('transactions.saveDataUpdate');
+Route::post('/ajax/transactions/deleteData', [App\Http\Controllers\TransactionController::class, 'deleteData'])->name('transactions.deleteData');
+
+Route::post('/ajax/doctors/getEditFormB', [App\Http\Controllers\DoctorController::class, 'getEditFormB'])->name('doctors.getEditFormB');
+Route::post('/ajax/doctors/saveDataUpdate', [App\Http\Controllers\DoctorController::class, 'saveDataUpdate'])->name('doctors.saveDataUpdate');
+Route::post('/ajax/doctors/deleteData', [App\Http\Controllers\DoctorController::class, 'deleteData'])->name('doctors.deleteData');
+
+Route::post('/ajax/articles/getEditFormB', [App\Http\Controllers\ArticleController::class, 'getEditFormB'])->name('articles.getEditFormB');
+Route::post('/ajax/articles/saveDataUpdate', [App\Http\Controllers\ArticleController::class, 'saveDataUpdate'])->name('articles.saveDataUpdate');
+Route::post('/ajax/articles/deleteData', [App\Http\Controllers\ArticleController::class, 'deleteData'])->name('articles.deleteData');
+
+
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

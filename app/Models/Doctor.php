@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Doctor extends Model
 {
     use HasFactory;
+
     public $timestamps = false;
-    protected $fillable = [
-        
-    ];
+    protected $guarded = [];
 }
+

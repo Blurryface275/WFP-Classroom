@@ -14,7 +14,8 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::with('services')->get();
-        return view('transactions.index', compact('transactions'));
+        $services = Service::all();
+        return view('transactions.index', compact('transactions', 'services'));
     }
 
     /**
@@ -70,24 +71,54 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the existing resource.
      */
-    public function edit(string $id)
+    public function getEditFormB(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Transaction::with('services')->find($id);
+        $services = Service::all();
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => view('transactions.getEditFormB', compact('data', 'services'))->render()
+        ), 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function saveDataUpdate(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Transaction::find($id);
+        $data->transaction_date = $request->transaction_date;
+        $data->status = $request->status;
+        $data->total_price = $request->total_price;
+        $data->payment_method = $request->payment_method;
+        $data->save();
+
+        if ($request->has('service_id') && !empty($request->service_id)) {
+            $data->services()->sync([$request->service_id]);
+        }
+
+        // Fetch reloaded data to send back the services badge HTML
+        $data->load('services');
+        $servicesHtml = '';
+        foreach ($data->services as $s) {
+            $servicesHtml .= '<span class="badge bg-info text-dark me-1">' . $s->service_name . '</span>';
+        }
+
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => 'Transaction data is up-to-date!',
+            'services_html' => $servicesHtml
+        ), 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function deleteData(Request $request)
     {
-        //
+        $id = $request->id;
+        $data = Transaction::find($id);
+        $data->services()->detach();
+        $data->delete();
+        return response()->json(array(
+            'status' => 'oke',
+            'msg' => 'Transaction data is removed !'
+        ), 200);
     }
 }
